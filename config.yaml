@@ -1,0 +1,5 @@
+exchange: BINANCE
+symbol: BTCUSDT
+interval: 1m
+outputDir: ./data
+persistorType: csv

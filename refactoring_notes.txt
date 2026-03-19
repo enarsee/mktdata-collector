@@ -1,0 +1,11 @@
+- Decouple websocket connectors and message payload type
+- Heartbeat based liveliness built into the websocket connector
+- Maybe have handler for onDisconnect, we can keep it empty for now
+- Link the message type to its specific subscribe command, handler
+- Can we define the Binance data model, and use Jackson to serialize / deserialize
+- Decouple Persistor and MessageType, convert to common data model from the Binance specific model
+- Persistor can be a separate Factory pattern defined at the start.
+- Ingestor -> queue -> Persistor, and we can choose type of persister at the start
+
+#New
+
