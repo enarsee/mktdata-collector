@@ -32,7 +32,7 @@ MVN="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bullish</groupId>
+    <groupId>com.enarsee</groupId>
     <artifactId>market-data-collector</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -95,7 +95,7 @@ MVN="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn"
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.bullish.marketdata.App</mainClass>
+                            <mainClass>com.enarsee.marketdata.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -144,7 +144,7 @@ git commit -m "chore: initialize Maven project with dependencies"
 - [ ] **Step 1: Write `Exchange` enum**
 
 ```java
-package com.bullish.marketdata.model;
+package com.enarsee.marketdata.model;
 
 public enum Exchange {
     BINANCE
@@ -154,7 +154,7 @@ public enum Exchange {
 - [ ] **Step 2: Write failing test for `Candlestick`**
 
 ```java
-package com.bullish.marketdata.model;
+package com.enarsee.marketdata.model;
 
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
@@ -207,7 +207,7 @@ class CandlestickTest {
 - [ ] **Step 3: Run test to verify it fails**
 
 ```bash
-"$MVN" test -pl . -Dtest="com.bullish.marketdata.model.CandlestickTest"
+"$MVN" test -pl . -Dtest="com.enarsee.marketdata.model.CandlestickTest"
 ```
 
 Expected: FAIL — `Candlestick` class not found.
@@ -215,7 +215,7 @@ Expected: FAIL — `Candlestick` class not found.
 - [ ] **Step 4: Implement `Candlestick` as a Java record**
 
 ```java
-package com.bullish.marketdata.model;
+package com.enarsee.marketdata.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -250,7 +250,7 @@ public record Candlestick(
 - [ ] **Step 5: Run test to verify it passes**
 
 ```bash
-"$MVN" test -pl . -Dtest="com.bullish.marketdata.model.CandlestickTest"
+"$MVN" test -pl . -Dtest="com.enarsee.marketdata.model.CandlestickTest"
 ```
 
 Expected: 2 tests PASS.
@@ -276,9 +276,9 @@ git commit -m "feat: add Candlestick record and Exchange enum"
 - [ ] **Step 1: Write `CandlestickListener` interface**
 
 ```java
-package com.bullish.marketdata.ingestor;
+package com.enarsee.marketdata.ingestor;
 
-import com.bullish.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Candlestick;
 
 public interface CandlestickListener {
     void onCandlestick(Candlestick candle);
@@ -288,7 +288,7 @@ public interface CandlestickListener {
 - [ ] **Step 2: Write `Ingestor` interface**
 
 ```java
-package com.bullish.marketdata.ingestor;
+package com.enarsee.marketdata.ingestor;
 
 public interface Ingestor {
     void start();
@@ -300,9 +300,9 @@ public interface Ingestor {
 - [ ] **Step 3: Write `Persistor` interface**
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
-import com.bullish.marketdata.ingestor.CandlestickListener;
+import com.enarsee.marketdata.ingestor.CandlestickListener;
 
 public interface Persistor extends CandlestickListener {
 }
@@ -335,7 +335,7 @@ git commit -m "feat: add Ingestor, CandlestickListener, and Persistor interfaces
 - [ ] **Step 1: Write failing test**
 
 ```java
-package com.bullish.marketdata.config;
+package com.enarsee.marketdata.config;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -365,7 +365,7 @@ class AppConfigTest {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.config.AppConfigTest"
+"$MVN" test -Dtest="com.enarsee.marketdata.config.AppConfigTest"
 ```
 
 Expected: FAIL — `AppConfig` not found.
@@ -373,7 +373,7 @@ Expected: FAIL — `AppConfig` not found.
 - [ ] **Step 3: Implement `AppConfig`**
 
 ```java
-package com.bullish.marketdata.config;
+package com.enarsee.marketdata.config;
 
 import org.yaml.snakeyaml.Yaml;
 import java.io.FileInputStream;
@@ -419,7 +419,7 @@ outputDir: ./data
 - [ ] **Step 5: Run test to verify it passes**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.config.AppConfigTest"
+"$MVN" test -Dtest="com.enarsee.marketdata.config.AppConfigTest"
 ```
 
 Expected: PASS.
@@ -445,10 +445,10 @@ Example: `BINANCE_BTCUSDT_1m_2026-03-19.csv` — flat under the output directory
 - [ ] **Step 1: Write failing test**
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.Exchange;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Exchange;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -522,7 +522,7 @@ class CsvFilePersistorTest {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.persistor.CsvFilePersistorTest"
+"$MVN" test -Dtest="com.enarsee.marketdata.persistor.CsvFilePersistorTest"
 ```
 
 Expected: FAIL — `CsvFilePersistor` not found.
@@ -530,9 +530,9 @@ Expected: FAIL — `CsvFilePersistor` not found.
 - [ ] **Step 3: Implement `CsvFilePersistor`**
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
-import com.bullish.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Candlestick;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -588,7 +588,7 @@ public class CsvFilePersistor implements Persistor {
 - [ ] **Step 4: Run test to verify it passes**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.persistor.CsvFilePersistorTest"
+"$MVN" test -Dtest="com.enarsee.marketdata.persistor.CsvFilePersistorTest"
 ```
 
 Expected: 2 tests PASS.
@@ -618,12 +618,12 @@ The WebSocket sends JSON messages. When a kline closes (`k.x == true`), we parse
 - [ ] **Step 1: Implement `BinanceWebSocketIngestor`**
 
 ```java
-package com.bullish.marketdata.ingestor.binance;
+package com.enarsee.marketdata.ingestor.binance;
 
-import com.bullish.marketdata.ingestor.CandlestickListener;
-import com.bullish.marketdata.ingestor.Ingestor;
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.Exchange;
+import com.enarsee.marketdata.ingestor.CandlestickListener;
+import com.enarsee.marketdata.ingestor.Ingestor;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Exchange;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
@@ -762,7 +762,7 @@ git commit -m "feat: add BinanceWebSocketIngestor with auto-reconnect"
         </encoder>
     </appender>
 
-    <logger name="com.bullish.marketdata" level="DEBUG"/>
+    <logger name="com.enarsee.marketdata" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
@@ -787,13 +787,13 @@ git commit -m "chore: add logback configuration"
 - [ ] **Step 1: Implement `App.java`**
 
 ```java
-package com.bullish.marketdata;
+package com.enarsee.marketdata;
 
-import com.bullish.marketdata.config.AppConfig;
-import com.bullish.marketdata.ingestor.Ingestor;
-import com.bullish.marketdata.ingestor.binance.BinanceWebSocketIngestor;
-import com.bullish.marketdata.persistor.CsvFilePersistor;
-import com.bullish.marketdata.persistor.Persistor;
+import com.enarsee.marketdata.config.AppConfig;
+import com.enarsee.marketdata.ingestor.Ingestor;
+import com.enarsee.marketdata.ingestor.binance.BinanceWebSocketIngestor;
+import com.enarsee.marketdata.persistor.CsvFilePersistor;
+import com.enarsee.marketdata.persistor.Persistor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

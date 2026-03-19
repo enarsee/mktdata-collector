@@ -48,7 +48,7 @@ MVN="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn"
 "$MVN" package -DskipTests
 
 # Run
-"$MVN" exec:java -Dexec.mainClass="com.bullish.marketdata.App"
+"$MVN" exec:java -Dexec.mainClass="com.enarsee.marketdata.App"
 ```
 
 Press `Ctrl+C` to stop gracefully.

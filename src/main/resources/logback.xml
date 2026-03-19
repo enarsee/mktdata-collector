@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.bullish.marketdata" level="DEBUG"/>
+    <logger name="com.enarsee.marketdata" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

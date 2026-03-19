@@ -18,7 +18,7 @@ MVN="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn"
 ## File Structure
 
 ```
-com.bullish.marketdata
+com.enarsee.marketdata
 ├── model/
 │   ├── Exchange.java                          # (existing, unchanged)
 │   ├── Candlestick.java                       # (modified) implements MarketData
@@ -57,7 +57,7 @@ com.bullish.marketdata
 - [ ] **Step 1: Create `DataType` enum**
 
 ```java
-package com.bullish.marketdata.model;
+package com.enarsee.marketdata.model;
 
 public enum DataType {
     KLINE,
@@ -69,7 +69,7 @@ public enum DataType {
 - [ ] **Step 2: Create `MarketData` interface**
 
 ```java
-package com.bullish.marketdata.model;
+package com.enarsee.marketdata.model;
 
 /**
  * Common interface for all standardized market data types.
@@ -87,7 +87,7 @@ public interface MarketData {
 Modify `src/main/java/com/bullish/marketdata/model/Candlestick.java`:
 
 ```java
-package com.bullish.marketdata.model;
+package com.enarsee.marketdata.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -167,7 +167,7 @@ The Binance kline WebSocket message structure is:
 
 ```java
 // BinanceKline.java
-package com.bullish.marketdata.ingestor.binance;
+package com.enarsee.marketdata.ingestor.binance;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -187,7 +187,7 @@ public class BinanceKline {
 
 ```java
 // BinanceKlineEvent.java
-package com.bullish.marketdata.ingestor.binance;
+package com.enarsee.marketdata.ingestor.binance;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -202,10 +202,10 @@ public class BinanceKlineEvent {
 - [ ] **Step 2: Write failing test for deserialization and conversion**
 
 ```java
-package com.bullish.marketdata.ingestor.binance;
+package com.enarsee.marketdata.ingestor.binance;
 
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.Exchange;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Exchange;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 
@@ -267,7 +267,7 @@ class BinanceKlineEventTest {
 - [ ] **Step 3: Run tests to verify they pass**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.ingestor.binance.BinanceKlineEventTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.ingestor.binance.BinanceKlineEventTest" -q
 ```
 
 Expected: 2 tests PASS (POJOs + Gson should just work).
@@ -291,9 +291,9 @@ git commit -m "feat: add typed Binance kline POJOs with Gson annotations"
 - [ ] **Step 1: Write `MessageType` interface**
 
 ```java
-package com.bullish.marketdata.ingestor;
+package com.enarsee.marketdata.ingestor;
 
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.model.MarketData;
 
 import java.util.Optional;
 
@@ -323,11 +323,11 @@ public interface MessageType<T> {
 - [ ] **Step 2: Write failing test for `BinanceKlineMessageType`**
 
 ```java
-package com.bullish.marketdata.ingestor.binance;
+package com.enarsee.marketdata.ingestor.binance;
 
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.Exchange;
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Exchange;
+import com.enarsee.marketdata.model.MarketData;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -403,7 +403,7 @@ class BinanceKlineMessageTypeTest {
 - [ ] **Step 3: Run test to verify it fails**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.ingestor.binance.BinanceKlineMessageTypeTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.ingestor.binance.BinanceKlineMessageTypeTest" -q
 ```
 
 Expected: FAIL — `BinanceKlineMessageType` not found.
@@ -411,11 +411,11 @@ Expected: FAIL — `BinanceKlineMessageType` not found.
 - [ ] **Step 4: Implement `BinanceKlineMessageType`**
 
 ```java
-package com.bullish.marketdata.ingestor.binance;
+package com.enarsee.marketdata.ingestor.binance;
 
-import com.bullish.marketdata.ingestor.MessageType;
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.Exchange;
+import com.enarsee.marketdata.ingestor.MessageType;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Exchange;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -466,7 +466,7 @@ public class BinanceKlineMessageType implements MessageType<BinanceKlineEvent> {
 - [ ] **Step 5: Run test to verify it passes**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.ingestor.binance.BinanceKlineMessageTypeTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.ingestor.binance.BinanceKlineMessageTypeTest" -q
 ```
 
 Expected: 3 tests PASS.
@@ -491,7 +491,7 @@ git commit -m "feat: add MessageType interface and BinanceKlineMessageType"
 - [ ] **Step 1: Create the callback interface**
 
 ```java
-package com.bullish.marketdata.connector;
+package com.enarsee.marketdata.connector;
 
 /**
  * Callback interface for WebSocket events.
@@ -509,7 +509,7 @@ public interface WebSocketCallback {
 A generic WebSocket transport that handles connection, heartbeat (ping), and reconnection. It knows nothing about message types — just delivers raw strings to the callback.
 
 ```java
-package com.bullish.marketdata.connector;
+package com.enarsee.marketdata.connector;
 
 import okhttp3.*;
 import org.slf4j.Logger;
@@ -652,7 +652,7 @@ git commit -m "feat: add generic WebSocketConnector with heartbeat and reconnect
 We test the dedup logic in isolation since we can't easily test real WebSocket failover in a unit test.
 
 ```java
-package com.bullish.marketdata.connector;
+package com.enarsee.marketdata.connector;
 
 import org.junit.jupiter.api.Test;
 
@@ -707,7 +707,7 @@ class FailoverWebSocketConnectorTest {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.connector.FailoverWebSocketConnectorTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.connector.FailoverWebSocketConnectorTest" -q
 ```
 
 Expected: FAIL — `DeduplicatingCallback` not found.
@@ -715,7 +715,7 @@ Expected: FAIL — `DeduplicatingCallback` not found.
 - [ ] **Step 3: Implement `DeduplicatingCallback`**
 
 ```java
-package com.bullish.marketdata.connector;
+package com.enarsee.marketdata.connector;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -778,7 +778,7 @@ public class DeduplicatingCallback implements WebSocketCallback {
 - [ ] **Step 4: Run test to verify it passes**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.connector.FailoverWebSocketConnectorTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.connector.FailoverWebSocketConnectorTest" -q
 ```
 
 Expected: 2 tests PASS.
@@ -786,7 +786,7 @@ Expected: 2 tests PASS.
 - [ ] **Step 5: Implement `FailoverWebSocketConnector`**
 
 ```java
-package com.bullish.marketdata.connector;
+package com.enarsee.marketdata.connector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -844,12 +844,12 @@ git commit -m "feat: add FailoverWebSocketConnector with dedup hot standby"
 - [ ] **Step 1: Write failing test**
 
 ```java
-package com.bullish.marketdata.ingestor;
+package com.enarsee.marketdata.ingestor;
 
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.DataType;
-import com.bullish.marketdata.model.Exchange;
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.DataType;
+import com.enarsee.marketdata.model.Exchange;
+import com.enarsee.marketdata.model.MarketData;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -943,7 +943,7 @@ class MarketDataQueueTest {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.ingestor.MarketDataQueueTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.ingestor.MarketDataQueueTest" -q
 ```
 
 Expected: FAIL — `MarketDataQueue` not found.
@@ -951,10 +951,10 @@ Expected: FAIL — `MarketDataQueue` not found.
 - [ ] **Step 3: Implement `MarketDataQueue`**
 
 ```java
-package com.bullish.marketdata.ingestor;
+package com.enarsee.marketdata.ingestor;
 
-import com.bullish.marketdata.model.DataType;
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.model.DataType;
+import com.enarsee.marketdata.model.MarketData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1022,7 +1022,7 @@ public class MarketDataQueue {
 - [ ] **Step 4: Run test to verify it passes**
 
 ```bash
-"$MVN" test -Dtest="com.bullish.marketdata.ingestor.MarketDataQueueTest" -q
+"$MVN" test -Dtest="com.enarsee.marketdata.ingestor.MarketDataQueueTest" -q
 ```
 
 Expected: 2 tests PASS.
@@ -1044,10 +1044,10 @@ git commit -m "feat: add MarketDataQueue with fan-out to multiple consumers"
 - [ ] **Step 1: Implement `MessageHandler`**
 
 ```java
-package com.bullish.marketdata.ingestor;
+package com.enarsee.marketdata.ingestor;
 
-import com.bullish.marketdata.connector.WebSocketCallback;
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.connector.WebSocketCallback;
+import com.enarsee.marketdata.model.MarketData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1125,9 +1125,9 @@ git commit -m "feat: add MessageHandler routing WS messages to queue via Message
 The persistor now consumes `MarketData` instead of being coupled to `CandlestickListener`.
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.model.MarketData;
 
 import java.util.function.Consumer;
 
@@ -1141,10 +1141,10 @@ public interface Persistor extends Consumer<MarketData> {
 - [ ] **Step 2: Refactor `CsvFilePersistor`**
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.MarketData;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.MarketData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1208,10 +1208,10 @@ public class CsvFilePersistor implements Persistor {
 - [ ] **Step 3: Update `CsvFilePersistorTest` to use new API**
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
-import com.bullish.marketdata.model.Candlestick;
-import com.bullish.marketdata.model.Exchange;
+import com.enarsee.marketdata.model.Candlestick;
+import com.enarsee.marketdata.model.Exchange;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -1285,7 +1285,7 @@ class CsvFilePersistorTest {
 - [ ] **Step 4: Implement `PersistorFactory`**
 
 ```java
-package com.bullish.marketdata.persistor;
+package com.enarsee.marketdata.persistor;
 
 public class PersistorFactory {
 
@@ -1301,7 +1301,7 @@ public class PersistorFactory {
 - [ ] **Step 5: Add `persistorType` to `AppConfig`**
 
 ```java
-package com.bullish.marketdata.config;
+package com.enarsee.marketdata.config;
 
 import org.yaml.snakeyaml.Yaml;
 import java.io.FileInputStream;
@@ -1368,16 +1368,16 @@ git commit -m "feat: refactor Persistor to Consumer<MarketData>, add PersistorFa
 - [ ] **Step 1: Rewrite `App.java`**
 
 ```java
-package com.bullish.marketdata;
+package com.enarsee.marketdata;
 
-import com.bullish.marketdata.config.AppConfig;
-import com.bullish.marketdata.connector.FailoverWebSocketConnector;
-import com.bullish.marketdata.ingestor.MarketDataQueue;
-import com.bullish.marketdata.ingestor.MessageHandler;
-import com.bullish.marketdata.ingestor.binance.BinanceKlineMessageType;
-import com.bullish.marketdata.model.DataType;
-import com.bullish.marketdata.persistor.Persistor;
-import com.bullish.marketdata.persistor.PersistorFactory;
+import com.enarsee.marketdata.config.AppConfig;
+import com.enarsee.marketdata.connector.FailoverWebSocketConnector;
+import com.enarsee.marketdata.ingestor.MarketDataQueue;
+import com.enarsee.marketdata.ingestor.MessageHandler;
+import com.enarsee.marketdata.ingestor.binance.BinanceKlineMessageType;
+import com.enarsee.marketdata.model.DataType;
+import com.enarsee.marketdata.persistor.Persistor;
+import com.enarsee.marketdata.persistor.PersistorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1457,7 +1457,7 @@ Expected: All tests PASS.
 - [ ] **Step 5: Smoke test — run the app**
 
 ```bash
-"$MVN" exec:java -Dexec.mainClass="com.bullish.marketdata.App"
+"$MVN" exec:java -Dexec.mainClass="com.enarsee.marketdata.App"
 ```
 
 Expected: Logs showing two WebSocket connections (primary + secondary) to Binance. After ~1 minute, a closed candle should appear and a CSV file created as `./data/BINANCE_BTCUSDT_1m_<date>.csv`. Ctrl+C to stop.
